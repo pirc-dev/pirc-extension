@@ -1,6 +1,6 @@
 {
   "name": "pirc-extension",
-  "version": "0.3.1-dev+ff1557002a22",
+  "version": "0.3.2",
   "description": "PiRC: puts every interactive pi session on a PiRC relay",
   "license": "MIT",
   "homepage": "https://pirc.dev",
