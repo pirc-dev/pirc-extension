@@ -1,4 +1,4 @@
-// PiRC extension 0.3.0-dev+387240f5c2aa. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.0-dev+d6cc98b4487f. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -7282,6 +7282,9 @@ var RelayConnection = class {
   // A token refused because another process of this host redeemed it at
   // the same moment, with the same key, earns one retry without it.
   tokenRetried = false;
+  // Why the token was refused, which is the answer if the key alone is
+  // then refused as not registered.
+  tokenRefusal;
   url;
   get current() {
     return this.state;
@@ -7340,6 +7343,7 @@ var RelayConnection = class {
     this.teardown();
     if (this.stopped) return;
     this.setState({ kind: "offline", reason });
+    if (this.stopped) return;
     const min = this.opts.minBackoffMs ?? 1e3;
     const max = this.opts.maxBackoffMs ?? 3e4;
     const backoff = Math.min(max, min * 2 ** this.attempt++);
@@ -7400,10 +7404,14 @@ var RelayConnection = class {
       if (phase !== "ready") {
         if (body.case === "error") {
           const { code, message } = body.value;
-          if (code === 10 /* TOKEN_INVALID */ && this.token && !this.tokenRetried) {
+          if (code === 10 /* TOKEN_INVALID */ && this.token && !this.tokenRetried && this.opts.tokenRetry !== false) {
             this.tokenRetried = true;
+            this.tokenRefusal = message;
             this.token = void 0;
             return this.retry("registration token already used; retrying with the key alone", 1e3);
+          }
+          if (code === 1 /* UNAUTHENTICATED */ && this.tokenRefusal !== void 0) {
+            return this.refuse(10 /* TOKEN_INVALID */, this.tokenRefusal || "registration token refused");
           }
           if (code === 14 /* APPROVAL_PENDING */) return this.await(message);
           if (REFUSALS.has(code)) return this.refuse(code, message);
@@ -7421,6 +7429,7 @@ var RelayConnection = class {
           phase = "ready";
           clearTimeout(this.loginTimer);
           this.attempt = 0;
+          this.tokenRefusal = void 0;
           if (this.token) {
             this.token = void 0;
             this.call("onRegistered", this.opts.onRegistered);
@@ -7776,6 +7785,47 @@ function fitItem(item, budget) {
 
 // extension/src/notice.ts
 var NOTICE_CHARS = 120;
+var PLAIN_CHARS = 2e3;
+function plainText(md) {
+  let head = md.slice(0, PLAIN_CHARS);
+  if (/[\ud800-\udbff]$/.test(head)) head = head.slice(0, -1);
+  const lines = [];
+  let fence;
+  for (const line of head.split("\n")) {
+    const f = /^\s*(`{3,}|~{3,})/.exec(line)?.[1];
+    if (fence !== void 0) {
+      if (f && f[0] === fence[0] && f.length >= fence.length && !line.trim().slice(f.length)) fence = void 0;
+      else lines.push(line);
+      continue;
+    }
+    if (f) {
+      fence = f;
+      continue;
+    }
+    if (/^\s*([-*_]\s*){3,}$/.test(line) || /^\s*=+\s*$/.test(line)) continue;
+    if (/^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?\s*$/.test(line)) continue;
+    let l = line.replace(/^(\s*>)+\s?/, "");
+    const heading = /^\s{0,3}#{1,6}\s+(.*?)(\s+#+)?\s*$/.exec(l);
+    if (heading) {
+      const h = inline(heading[1]).trim();
+      lines.push(h && !/[.:!?…]$/.test(h) ? `${h}:` : h);
+      continue;
+    }
+    l = l.replace(/^\s*([-*+]|\d+[.)])\s+(\[[ xX]\]\s+)?/, "");
+    if (/^\s*\|.*\|\s*$/.test(l)) {
+      l = l.trim().slice(1, -1).split(/(?<!\\)\|/).map((c) => c.trim()).join(" \xB7 ");
+    }
+    lines.push(inline(l));
+  }
+  return lines.join("\n");
+}
+function inline(s) {
+  const spans = [];
+  return s.replace(/\\([\\`*_{}\[\]()#+\-.!|~>])/g, (_, c) => String.fromCharCode(57344 + c.charCodeAt(0))).replace(/(`+)([^`]|[^`].*?[^`])\1(?!`)/g, (_, _ticks, code) => {
+    spans.push(code.trim() ? code.trim() : code);
+    return String.fromCharCode(57600 + spans.length - 1);
+  }).replace(/!\[([^\]]*)\]\((?:[^()\s]|\([^()\s]*\))*(?:\s+"[^"]*")?\)/g, "$1").replace(/\[([^\]]+)\]\((?:[^()\s]|\([^()\s]*\))*(?:\s+"[^"]*")?\)/g, "$1").replace(/<((https?|mailto):[^>\s]+)>/g, "$1").replace(/(^|[^\w/])(\*\*|__)(?=\S)(.+?)(?<=\S)\2(?![\w/])/g, "$1$3").replace(/~~(?=\S)(.+?)(?<=\S)~~/g, "$1").replace(/(^|[^\w*/])\*(?=[^\s*])(.+?)(?<=[^\s*])\*(?![\w*/])/g, "$1$2").replace(/(^|[^\w])_(?=[^\s_])(.+?)(?<=[^\s_])_(?!\w)/g, "$1$2").replace(/[-]/g, (c) => spans[c.charCodeAt(0) - 57600] ?? c).replace(/[-]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 57344));
+}
 function noticeText(s) {
   const points = [...s.replace(/\s+/g, " ").trim()];
   if (points.length <= NOTICE_CHARS) return points.join("");
@@ -7789,11 +7839,11 @@ function turnNotice(reply, number) {
   const r = reply?.role === "assistant" ? reply : void 0;
   if (r?.stopReason === "aborted") return void 0;
   if (r?.stopReason === "error") return create(NoticeSchema, { number, kind: 2 /* FAILED */, text: noticeText(r.errorMessage ?? "") });
-  const text = (r?.content ?? []).flatMap((c) => c.type === "text" ? [c.text] : []).join(" ");
-  return create(NoticeSchema, { number, kind: 1 /* FINISHED */, text: noticeText(text) });
+  const text = (r?.content ?? []).flatMap((c) => c.type === "text" ? [c.text] : []).join("\n");
+  return create(NoticeSchema, { number, kind: 1 /* FINISHED */, text: noticeText(plainText(text)) });
 }
 function questionNotice(q, number) {
-  return create(NoticeSchema, { number, kind: 3 /* QUESTION */, text: noticeText([q.title, q.message].join(" ")) });
+  return create(NoticeSchema, { number, kind: 3 /* QUESTION */, text: noticeText(plainText([q.title, q.message].join("\n"))) });
 }
 
 // extension/src/photos.ts
@@ -9579,7 +9629,7 @@ var Host = class _Host {
       lines.push(`config ${c.path}`);
       if (c.relay) lines.push(`relay ${c.relay}`);
       lines.push(`key ${c.keyFile}${this.key ? ` (${Buffer.from(this.key.publicKey).toString("base64url")})` : ""}`);
-      lines.push(`label ${c.label}`);
+      lines.push(`label asked for ${c.label} (the relay's name for this machine may differ: pirc-relay list)`);
     }
     if ("reason" in this.state) lines.push(`relay said: ${this.state.reason}`);
     if (this.live) lines.push(`session ${this.live.sessionId}, instance ${this.instanceId}`);
@@ -9715,8 +9765,8 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.0-dev+387240f5c2aa" : "dev";
-var LOAD = true ? "0.3.0-dev+387240f5c2aa" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.0-dev+d6cc98b4487f" : "dev";
+var LOAD = true ? "0.3.0-dev+d6cc98b4487f" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
 if (!proc.host || proc.load !== LOAD) {
