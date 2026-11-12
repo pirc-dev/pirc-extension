@@ -1,4 +1,4 @@
-// PiRC extension 0.3.1. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.1-dev+ff1557002a22. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -7280,11 +7280,11 @@ var RelayConnection = class {
   loginTimer;
   token;
   // A token refused because another process of this host redeemed it at
-  // the same moment, with the same key, earns one retry without it.
+  // the same moment, with the same key, earns one retry. The retry keeps
+  // the token: the relay lets a registered key in whatever token it brings,
+  // and refuses a wrong one again, which is then the answer. Without it, a
+  // host's key alone would be held for approval instead.
   tokenRetried = false;
-  // Why the token was refused, which is the answer if the key alone is
-  // then refused as not registered.
-  tokenRefusal;
   url;
   get current() {
     return this.state;
@@ -7406,12 +7406,7 @@ var RelayConnection = class {
           const { code, message } = body.value;
           if (code === 10 /* TOKEN_INVALID */ && this.token && !this.tokenRetried && this.opts.tokenRetry !== false) {
             this.tokenRetried = true;
-            this.tokenRefusal = message;
-            this.token = void 0;
-            return this.retry("registration token already used; retrying with the key alone", 1e3);
-          }
-          if (code === 1 /* UNAUTHENTICATED */ && this.tokenRefusal !== void 0) {
-            return this.refuse(10 /* TOKEN_INVALID */, this.tokenRefusal || "registration token refused");
+            return this.retry("registration token refused; trying once more, in case this host's other process used it", 1e3);
           }
           if (code === 14 /* APPROVAL_PENDING */) return this.await(message);
           if (REFUSALS.has(code)) return this.refuse(code, message);
@@ -7429,7 +7424,6 @@ var RelayConnection = class {
           phase = "ready";
           clearTimeout(this.loginTimer);
           this.attempt = 0;
-          this.tokenRefusal = void 0;
           if (this.token) {
             this.token = void 0;
             this.call("onRegistered", this.opts.onRegistered);
@@ -9765,8 +9759,8 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.1" : "dev";
-var LOAD = true ? "0.3.1" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.1-dev+ff1557002a22" : "dev";
+var LOAD = true ? "0.3.1-dev+ff1557002a22" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
 if (!proc.host || proc.load !== LOAD) {
