@@ -1,4 +1,4 @@
-// PiRC extension 0.3.4. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.5. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -9783,8 +9783,8 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.4" : "dev";
-var LOAD = true ? "0.3.4" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.5" : "dev";
+var LOAD = true ? "0.3.5" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
 if (!proc.host || proc.load !== LOAD) {
