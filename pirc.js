@@ -1,4 +1,4 @@
-// PiRC extension 0.3.6. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.6-dev+9aa707d88703. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -7871,6 +7871,11 @@ function piVersion() {
     return "unknown";
   }
 }
+function piRangeNote(version) {
+  const m = /^(\d+)\.\d+\.\d+/.exec(version);
+  if (!m || Number(m[1]) === 1) return void 0;
+  return `pi ${version} is outside the range PiRC is tested with (1.0.0 to 1.x); something may not work`;
+}
 
 // extension/src/photos.ts
 var PHOTO_ENTRY = "pirc:photos";
@@ -9651,6 +9656,8 @@ var Host = class _Host {
     }
     if ("reason" in this.state) lines.push(`relay said: ${this.state.reason}`);
     if (this.live) lines.push(`session ${this.live.sessionId}, instance ${this.instanceId}`);
+    const range = piRangeNote(this.versions.pi);
+    if (range) lines.push(range);
     if (this.dialogs.problem) lines.push(this.dialogs.problem);
     if (this.lastError) lines.push(`last error: ${this.lastError}`);
     if (c?.removed) lines.push(`removed from the relay ${c.removed}; to join again: /pirc enrol <relay-url> [token]`);
@@ -9783,8 +9790,8 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.6" : "dev";
-var LOAD = true ? "0.3.6" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.6-dev+9aa707d88703" : "dev";
+var LOAD = true ? "0.3.6-dev+9aa707d88703" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
 if (!proc.host || proc.load !== LOAD) {
