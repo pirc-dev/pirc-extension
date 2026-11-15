@@ -1,4 +1,4 @@
-// PiRC extension 0.3.7. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.8. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -7503,6 +7503,35 @@ function write(f) {
   renameSync(tmp, path);
 }
 
+// extension/src/copies.ts
+import { dirname as dirname3 } from "node:path";
+import { fileURLToPath } from "node:url";
+var COPY_EVENT = "pirc:copy";
+function packageRoot(moduleURL) {
+  return dirname3(fileURLToPath(new URL("./x", moduleURL)));
+}
+function installOf(root) {
+  const git = /\/git\/([^/]+\/.+)$/.exec(root);
+  if (git) return `git:${git[1]}`;
+  const npm = /\/node_modules\/((?:@[^/]+\/)?[^/]+)$/.exec(root);
+  if (npm) return `npm:${npm[1]}`;
+  return root;
+}
+function claimLoad(events, root) {
+  const claim = { root };
+  events.emit(COPY_EVENT, claim);
+  if (claim.owner === void 0 || claim.owner === root) {
+    events.on(COPY_EVENT, (data) => {
+      const other = data;
+      if (other && typeof other === "object" && other.owner === void 0) other.owner = root;
+    });
+    return void 0;
+  }
+  const [running, here] = [installOf(claim.owner), installOf(root)];
+  const remove = running.startsWith("git:") && !here.startsWith("git:") ? running : here;
+  return `pirc: PiRC is installed twice, as ${running} and ${here}, and only ${running} runs. Remove one: pi remove ${remove}, then /reload`;
+}
+
 // extension/src/host.ts
 import { appendFileSync } from "node:fs";
 
@@ -7842,16 +7871,16 @@ function questionNotice(q, number) {
 
 // extension/src/photos.ts
 import { readFileSync as readFileSync4 } from "node:fs";
-import { dirname as dirname4, join as join3 } from "node:path";
+import { dirname as dirname5, join as join3 } from "node:path";
 import { pathToFileURL } from "node:url";
 
 // extension/src/pi.ts
 import { readFileSync as readFileSync3, realpathSync } from "node:fs";
-import { dirname as dirname3, join as join2 } from "node:path";
+import { dirname as dirname4, join as join2 } from "node:path";
 function piPackageDir() {
   try {
-    let dir = dirname3(realpathSync(process.argv[1]));
-    for (let i = 0; i < 5; i++, dir = dirname3(dir)) {
+    let dir = dirname4(realpathSync(process.argv[1]));
+    for (let i = 0; i < 5; i++, dir = dirname4(dir)) {
       try {
         const pkg = JSON.parse(readFileSync3(join2(dir, "package.json"), "utf8"));
         if (pkg.name === "@earendil-works/pi-coding-agent") return dir;
@@ -7884,10 +7913,10 @@ var tui;
 var convertToPng;
 var loading;
 function tuiEntry(pi) {
-  const dirs = [join3(dirname4(pi), "tui")];
-  for (let d = pi; ; d = dirname4(d)) {
+  const dirs = [join3(dirname5(pi), "tui")];
+  for (let d = pi; ; d = dirname5(d)) {
     dirs.push(join3(d, "node_modules", "@earendil-works", "pi-tui"));
-    if (dirname4(d) === d) break;
+    if (dirname5(d) === d) break;
   }
   for (const dir of dirs) {
     try {
@@ -9790,16 +9819,26 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.7" : "dev";
-var LOAD = true ? "0.3.7" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.8" : "dev";
+var LOAD = true ? "0.3.8" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
-if (!proc.host || proc.load !== LOAD) {
-  proc.host = Host.succeeding(proc.host, randomBytes4(8).toString("hex"), { pi: piVersion(), extension: EXTENSION_VERSION });
-  proc.load = LOAD;
-}
 var USAGE = "usage: /pirc [status | enrol <relay-url> [token] | reconnect]";
 async function index_default(pi) {
+  const twice = claimLoad(pi.events, packageRoot(import.meta.url));
+  if (twice) {
+    pi.on("session_start", (_e, ctx) => {
+      if (ctx.mode !== "tui" || proc.twiceSaid) return;
+      proc.twiceSaid = true;
+      proc.host?.log(twice);
+      ctx.ui.notify(twice, "error");
+    });
+    return;
+  }
+  if (!proc.host || proc.load !== LOAD) {
+    proc.host = Host.succeeding(proc.host, randomBytes4(8).toString("hex"), { pi: piVersion(), extension: EXTENSION_VERSION });
+    proc.load = LOAD;
+  }
   let active = false;
   const on = (where, fn) => (e) => {
     const live = proc.host.liveFor(pi);

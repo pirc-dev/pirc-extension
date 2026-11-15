@@ -1,9 +1,14 @@
 {
   "name": "pirc-extension",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "PiRC: puts every interactive pi session on a PiRC relay",
   "license": "MIT",
   "homepage": "https://pirc.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pirc-dev/pirc.git",
+    "directory": "extension"
+  },
   "type": "module",
   "keywords": [
     "pi-package"
@@ -12,9 +17,11 @@
     "extensions": [
       "./pi-parts.js",
       "./loader.js"
-    ]
+    ],
+    "image": "https://pirc.dev/shots/web-dark.webp"
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": ">=1.0.0 <2"
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
   }
 }
