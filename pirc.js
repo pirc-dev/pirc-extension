@@ -1,4 +1,4 @@
-// PiRC extension 0.3.9. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.10. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -8388,6 +8388,7 @@ var DELTA_MS = 50;
 var PROGRESS_MS = 250;
 var PROMPT_ECHO_MS = 10 * 6e4;
 var CONFIRM_MS = 3e4;
+var STOP_COMING_MS = 5e3;
 var STOP_DELAY_MS = 300;
 var PERSIST_MS = 2e3;
 var SHOWN = /* @__PURE__ */ new Set(["user", "assistant", "toolResult"]);
@@ -8594,6 +8595,12 @@ var Live = class {
   // Sent the first to an idle pi: the rest wait for its run to start, or
   // for as long as a prompt may take to, not counting a compaction first.
   starting = false;
+  // A prompt has come in (pi's input) and its run has not started: a
+  // question asked now (in before_agent_start) holds that run up.
+  runComing = false;
+  // Until when the run coming is to be stopped as it starts: a dismissed
+  // question held it up (the answer case below).
+  stopComing = 0;
   startTimer;
   // A Compact being run, answered when pi finishes it.
   compaction;
@@ -8892,8 +8899,15 @@ var Live = class {
     if (p) clearTimeout(p.timer);
     this.progress.delete(toolCallId);
   }
+  // pi has taken a prompt in; its run starts after before_agent_start.
+  onInput() {
+    if (!this.working) this.runComing = true;
+  }
   onWorking(working) {
     this.catchUp();
+    this.runComing = false;
+    if (working && Date.now() < this.stopComing) this.ctx.abort();
+    this.stopComing = 0;
     if (working && !this.working) this.reply = void 0;
     if (!working && this.working) this.raise(turnNotice(this.reply, this.nextNumber()));
     if (working) {
@@ -9233,7 +9247,10 @@ var Live = class {
           if (note && turn) this.pi.sendUserMessage(note, { deliverAs: "steer" });
         });
         if (why) return respond(errorReply(requestId, 4 /* INVALID */, why));
-        if (value.case === "dismissed" && (turn || !this.ctx.isIdle())) this.ctx.abort();
+        if (value.case === "dismissed") {
+          if (turn || !this.ctx.isIdle()) this.ctx.abort();
+          if (!turn && this.runComing) this.stopComing = Date.now() + STOP_COMING_MS;
+        }
         if (note && !turn) setImmediate(this.guard("note", () => this.pi.sendUserMessage(note, { deliverAs: "followUp" })));
         return respond(accepted(requestId));
       }
@@ -9835,8 +9852,8 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.9" : "dev";
-var LOAD = true ? "0.3.9" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.10" : "dev";
+var LOAD = true ? "0.3.10" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
 var USAGE = "usage: /pirc [status | enrol <relay-url> [token] | reconnect]";
@@ -9905,6 +9922,10 @@ async function index_default(pi) {
   pi.on("tool_execution_start", on("tool_execution_start", (live, e) => live.onToolStart(e.toolCallId)));
   pi.on("tool_execution_update", on("tool_execution_update", (live, e) => live.onToolUpdate(e)));
   pi.on("tool_execution_end", on("tool_execution_end", (live, e) => live.onToolEnd(e.toolCallId)));
+  pi.on("input", (e) => {
+    on("input", (live) => live.onInput())(e);
+    return { action: "continue" };
+  });
   pi.on("agent_start", on("agent_start", (live) => {
     proc.host.dialogs.install(live.ctx.ui, () => proc.host.dialogs);
     live.onWorking(true);
