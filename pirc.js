@@ -1,4 +1,4 @@
-// PiRC extension 0.3.11. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.12. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -13,6 +13,14 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
   if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
+var __esm = (fn, res, err) => function __init() {
+  if (err) throw err[0];
+  try {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  } catch (e) {
+    throw err = [e], e;
+  }
+};
 var __commonJS = (cb, mod) => function __require2() {
   try {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
@@ -3720,6 +3728,34 @@ var require_websocket_server = __commonJS({
   }
 });
 
+// no-hosted:./hosted/anchor.ts
+var anchor_exports = {};
+var init_anchor = __esm({
+  "no-hosted:./hosted/anchor.ts"() {
+  }
+});
+
+// no-hosted:./hosted/transport.ts
+var transport_exports = {};
+var init_transport = __esm({
+  "no-hosted:./hosted/transport.ts"() {
+  }
+});
+
+// no-hosted:@pirc/relay-client/hosted
+var hosted_exports = {};
+var init_hosted = __esm({
+  "no-hosted:@pirc/relay-client/hosted"() {
+  }
+});
+
+// no-hosted:./hosted/join.ts
+var join_exports = {};
+var init_join = __esm({
+  "no-hosted:./hosted/join.ts"() {
+  }
+});
+
 // extension/src/index.ts
 import { randomBytes as randomBytes4 } from "node:crypto";
 
@@ -7137,10 +7173,10 @@ var import_websocket_server = __toESM(require_websocket_server(), 1);
 var wrapper_default = import_websocket.default;
 
 // protocol/gen/pirc/v1alpha1/common_pb.ts
-var file_pirc_v1alpha1_common = /* @__PURE__ */ fileDesc("ChpwaXJjL3YxYWxwaGExL2NvbW1vbi5wcm90bxINcGlyYy52MWFscGhhMSJHCgpTZXNzaW9uUmVmEhAKCGhvc3Rfa2V5GAEgASgMEhIKCnNlc3Npb25faWQYAiABKAkSEwoLaW5zdGFuY2VfaWQYAyABKAkiVAoFRXJyb3ISJgoEY29kZRgBIAEoDjIYLnBpcmMudjFhbHBoYTEuRXJyb3JDb2RlEg8KB21lc3NhZ2UYAiABKAkSEgoKcmVxdWVzdF9pZBgDIAEoCSq6AwoJRXJyb3JDb2RlEhoKFkVSUk9SX0NPREVfVU5TUEVDSUZJRUQQABIeChpFUlJPUl9DT0RFX1VOQVVUSEVOVElDQVRFRBABEiAKHEVSUk9SX0NPREVfUEVSTUlTU0lPTl9ERU5JRUQQAhIiCh5FUlJPUl9DT0RFX1ZFUlNJT05fVU5TVVBQT1JURUQQAxIWChJFUlJPUl9DT0RFX0lOVkFMSUQQBBIYChRFUlJPUl9DT0RFX1RPT19MQVJHRRAFEiAKHEVSUk9SX0NPREVfU0VTU0lPTl9OT1RfRk9VTkQQBhIbChdFUlJPUl9DT0RFX1NFU1NJT05fR09ORRAHEhMKD0VSUk9SX0NPREVfQlVTWRAIEhYKEkVSUk9SX0NPREVfVElNRU9VVBAJEhwKGEVSUk9SX0NPREVfVE9LRU5fSU5WQUxJRBAKEhsKF0VSUk9SX0NPREVfUkFURV9MSU1JVEVEEAsSFwoTRVJST1JfQ09ERV9JTlRFUk5BTBAMEhgKFEVSUk9SX0NPREVfUElfRkFJTEVEEA0SHwobRVJST1JfQ09ERV9BUFBST1ZBTF9QRU5ESU5HEA5CrAEKEWNvbS5waXJjLnYxYWxwaGExQgtDb21tb25Qcm90b1ABWjVwaXJjLmRldi9yZWxheS9pbnRlcm5hbC9wYi9waXJjL3YxYWxwaGExO3BpcmN2MWFscGhhMaICA1BYWKoCDVBpcmMuVjFhbHBoYTHKAg1QaXJjXFYxYWxwaGEx4gIZUGlyY1xWMWFscGhhMVxHUEJNZXRhZGF0YeoCDlBpcmM6OlYxYWxwaGExYgZwcm90bzM");
+var file_pirc_v1alpha1_common = /* @__PURE__ */ fileDesc("ChpwaXJjL3YxYWxwaGExL2NvbW1vbi5wcm90bxINcGlyYy52MWFscGhhMSJHCgpTZXNzaW9uUmVmEhAKCGhvc3Rfa2V5GAEgASgMEhIKCnNlc3Npb25faWQYAiABKAkSEwoLaW5zdGFuY2VfaWQYAyABKAkiVAoFRXJyb3ISJgoEY29kZRgBIAEoDjIYLnBpcmMudjFhbHBoYTEuRXJyb3JDb2RlEg8KB21lc3NhZ2UYAiABKAkSEgoKcmVxdWVzdF9pZBgDIAEoCSrTAwoJRXJyb3JDb2RlEhoKFkVSUk9SX0NPREVfVU5TUEVDSUZJRUQQABIeChpFUlJPUl9DT0RFX1VOQVVUSEVOVElDQVRFRBABEiAKHEVSUk9SX0NPREVfUEVSTUlTU0lPTl9ERU5JRUQQAhIiCh5FUlJPUl9DT0RFX1ZFUlNJT05fVU5TVVBQT1JURUQQAxIWChJFUlJPUl9DT0RFX0lOVkFMSUQQBBIYChRFUlJPUl9DT0RFX1RPT19MQVJHRRAFEiAKHEVSUk9SX0NPREVfU0VTU0lPTl9OT1RfRk9VTkQQBhIbChdFUlJPUl9DT0RFX1NFU1NJT05fR09ORRAHEhMKD0VSUk9SX0NPREVfQlVTWRAIEhYKEkVSUk9SX0NPREVfVElNRU9VVBAJEhwKGEVSUk9SX0NPREVfVE9LRU5fSU5WQUxJRBAKEhsKF0VSUk9SX0NPREVfUkFURV9MSU1JVEVEEAsSFwoTRVJST1JfQ09ERV9JTlRFUk5BTBAMEhgKFEVSUk9SX0NPREVfUElfRkFJTEVEEA0SHwobRVJST1JfQ09ERV9BUFBST1ZBTF9QRU5ESU5HEA4SFwoTRVJST1JfQ09ERV9DT05GTElDVBAPQqwBChFjb20ucGlyYy52MWFscGhhMUILQ29tbW9uUHJvdG9QAVo1cGlyYy5kZXYvcmVsYXkvaW50ZXJuYWwvcGIvcGlyYy92MWFscGhhMTtwaXJjdjFhbHBoYTGiAgNQWFiqAg1QaXJjLlYxYWxwaGExygINUGlyY1xWMWFscGhhMeICGVBpcmNcVjFhbHBoYTFcR1BCTWV0YWRhdGHqAg5QaXJjOjpWMWFscGhhMWIGcHJvdG8z");
 
 // protocol/gen/pirc/v1alpha1/relay_pb.ts
-var file_pirc_v1alpha1_relay = /* @__PURE__ */ fileDesc("ChlwaXJjL3YxYWxwaGExL3JlbGF5LnByb3RvEg1waXJjLnYxYWxwaGExIugLCgVGcmFtZRIlCgVoZWxsbxgBIAEoCzIULnBpcmMudjFhbHBoYTEuSGVsbG9IABItCgljaGFsbGVuZ2UYAiABKAsyGC5waXJjLnYxYWxwaGExLkNoYWxsZW5nZUgAEiMKBGF1dGgYAyABKAsyEy5waXJjLnYxYWxwaGExLkF1dGhIABIpCgd3ZWxjb21lGAQgASgLMhYucGlyYy52MWFscGhhMS5XZWxjb21lSAASOgoQc2Vzc2lvbl9hbm5vdW5jZRgKIAEoCzIeLnBpcmMudjFhbHBoYTEuU2Vzc2lvbkFubm91bmNlSAASMAoLc2Vzc2lvbl9lbmQYCyABKAsyGS5waXJjLnYxYWxwaGExLlNlc3Npb25FbmRIABI+ChJzdWJzY3JpYmVfc2Vzc2lvbnMYFCABKAsyIC5waXJjLnYxYWxwaGExLlN1YnNjcmliZVNlc3Npb25zSAASJwoGYXR0YWNoGBUgASgLMhUucGlyYy52MWFscGhhMS5BdHRhY2hIABInCgZkZXRhY2gYFiABKAsyFS5waXJjLnYxYWxwaGExLkRldGFjaEgAEj8KE3dhdGNoX3BlbmRpbmdfaG9zdHMYFyABKAsyIC5waXJjLnYxYWxwaGExLldhdGNoUGVuZGluZ0hvc3RzSAASMgoMYXBwcm92ZV9ob3N0GBggASgLMhoucGlyYy52MWFscGhhMS5BcHByb3ZlSG9zdEgAEjAKC3JlamVjdF9ob3N0GBkgASgLMhkucGlyYy52MWFscGhhMS5SZWplY3RIb3N0SAASLgoKd2F0Y2hfa2V5cxgaIAEoCzIYLnBpcmMudjFhbHBoYTEuV2F0Y2hLZXlzSAASLgoKcmVuYW1lX2tleRgbIAEoCzIYLnBpcmMudjFhbHBoYTEuUmVuYW1lS2V5SAASLgoKcmVtb3ZlX2tleRgcIAEoCzIYLnBpcmMudjFhbHBoYTEuUmVtb3ZlS2V5SAASMAoLaXNzdWVfdG9rZW4YHSABKAsyGS5waXJjLnYxYWxwaGExLklzc3VlVG9rZW5IABIyCgxzZXNzaW9uX2xpc3QYHiABKAsyGi5waXJjLnYxYWxwaGExLlNlc3Npb25MaXN0SAASOAoPc2Vzc2lvbl91cGRhdGVkGB8gASgLMh0ucGlyYy52MWFscGhhMS5TZXNzaW9uVXBkYXRlZEgAEjQKDXNlc3Npb25fZW5kZWQYICABKAsyGy5waXJjLnYxYWxwaGExLlNlc3Npb25FbmRlZEgAEjQKDXBlbmRpbmdfaG9zdHMYISABKAsyGy5waXJjLnYxYWxwaGExLlBlbmRpbmdIb3N0c0gAEjIKDGhvc3RfZGVjaWRlZBgiIAEoCzIaLnBpcmMudjFhbHBoYTEuSG9zdERlY2lkZWRIABIjCgRrZXlzGCMgASgLMhMucGlyYy52MWFscGhhMS5LZXlzSAASMAoLa2V5X2NoYW5nZWQYJCABKAsyGS5waXJjLnYxYWxwaGExLktleUNoYW5nZWRIABIyCgx0b2tlbl9pc3N1ZWQYJSABKAsyGi5waXJjLnYxYWxwaGExLlRva2VuSXNzdWVkSAASJwoGcm91dGVkGCggASgLMhUucGlyYy52MWFscGhhMS5Sb3V0ZWRIABI0Cg1yZWdpc3Rlcl9wdXNoGDwgASgLMhsucGlyYy52MWFscGhhMS5SZWdpc3RlclB1c2hIABI4Cg91bnJlZ2lzdGVyX3B1c2gYPSABKAsyHS5waXJjLnYxYWxwaGExLlVucmVnaXN0ZXJQdXNoSAASMgoMcHVzaF9jaGFuZ2VkGD4gASgLMhoucGlyYy52MWFscGhhMS5QdXNoQ2hhbmdlZEgAEjsKEXJlZ2lzdGVyX3JlYWRfa2V5GD8gASgLMh4ucGlyYy52MWFscGhhMS5SZWdpc3RlclJlYWRLZXlIABIlCgVlcnJvchgyIAEoCzIULnBpcmMudjFhbHBoYTEuRXJyb3JIAEIGCgRib2R5IrUBCgVIZWxsbxI4ChBwcm90b2NvbF92ZXJzaW9uGAEgASgOMh4ucGlyYy52MWFscGhhMS5Qcm90b2NvbFZlcnNpb24SIQoEcm9sZRgCIAEoDjITLnBpcmMudjFhbHBoYTEuUm9sZRISCgpwdWJsaWNfa2V5GAMgASgMEhoKEnJlZ2lzdHJhdGlvbl90b2tlbhgEIAEoCRINCgVsYWJlbBgFIAEoCRIQCghzb2Z0d2FyZRgGIAEoCSIaCglDaGFsbGVuZ2USDQoFbm9uY2UYASABKAwiGQoEQXV0aBIRCglzaWduYXR1cmUYASABKAwigQEKB1dlbGNvbWUSOAoQcHJvdG9jb2xfdmVyc2lvbhgBIAEoDjIeLnBpcmMudjFhbHBoYTEuUHJvdG9jb2xWZXJzaW9uEhcKD21heF9mcmFtZV9ieXRlcxgCIAEoDRIQCghzb2Z0d2FyZRgDIAEoCRIRCglyZWFkX29ubHkYBCABKAgiXAoPU2Vzc2lvbkFubm91bmNlEioKB3Nlc3Npb24YASABKAsyGS5waXJjLnYxYWxwaGExLlNlc3Npb25SZWYSDwoHcGF5bG9hZBgCIAEoDBIMCgRwdXNoGAMgASgIIjgKClNlc3Npb25FbmQSKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZiITChFTdWJzY3JpYmVTZXNzaW9ucyI0CgZBdHRhY2gSKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZiI0CgZEZXRhY2gSKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZiKRAQoMU2Vzc2lvbkVudHJ5EioKB3Nlc3Npb24YASABKAsyGS5waXJjLnYxYWxwaGExLlNlc3Npb25SZWYSEgoKaG9zdF9sYWJlbBgCIAEoCRIPCgdwYXlsb2FkGAMgASgMEjAKDGFubm91bmNlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiSgoLU2Vzc2lvbkxpc3QSLQoIc2Vzc2lvbnMYASADKAsyGy5waXJjLnYxYWxwaGExLlNlc3Npb25FbnRyeRIMCgRtb3JlGAIgASgIIjwKDlNlc3Npb25VcGRhdGVkEioKBWVudHJ5GAEgASgLMhsucGlyYy52MWFscGhhMS5TZXNzaW9uRW50cnkiOgoMU2Vzc2lvbkVuZGVkEioKB3Nlc3Npb24YASABKAsyGS5waXJjLnYxYWxwaGExLlNlc3Npb25SZWYiWQoGUm91dGVkEioKB3Nlc3Npb24YASABKAsyGS5waXJjLnYxYWxwaGExLlNlc3Npb25SZWYSEgoKY2xpZW50X2tleRgCIAEoDBIPCgdwYXlsb2FkGAMgASgMIhMKEVdhdGNoUGVuZGluZ0hvc3RzIoIBCgtQZW5kaW5nSG9zdBISCgpwdWJsaWNfa2V5GAEgASgMEg0KBWxhYmVsGAIgASgJEhAKCHNvZnR3YXJlGAMgASgJEg4KBnJlbW90ZRgEIAEoCRIuCgpmaXJzdF9zZWVuGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCI5CgxQZW5kaW5nSG9zdHMSKQoFaG9zdHMYASADKAsyGi5waXJjLnYxYWxwaGExLlBlbmRpbmdIb3N0IkQKC0FwcHJvdmVIb3N0EhIKCnJlcXVlc3RfaWQYASABKAkSEgoKcHVibGljX2tleRgCIAEoDBINCgVsYWJlbBgDIAEoCSI0CgpSZWplY3RIb3N0EhIKCnJlcXVlc3RfaWQYASABKAkSEgoKcHVibGljX2tleRgCIAEoDCIhCgtIb3N0RGVjaWRlZBISCgpyZXF1ZXN0X2lkGAEgASgJIgsKCVdhdGNoS2V5cyKzAQoNUmVnaXN0ZXJlZEtleRISCgpwdWJsaWNfa2V5GAEgASgMEiEKBHJvbGUYAiABKA4yEy5waXJjLnYxYWxwaGExLlJvbGUSDQoFbGFiZWwYAyABKAkSLAoIYWRkZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg4KBm9ubGluZRgFIAEoCBIMCgRwdXNoGAYgASgIEhAKCHJlYWRfa2V5GAcgASgIIjIKBEtleXMSKgoEa2V5cxgBIAMoCzIcLnBpcmMudjFhbHBoYTEuUmVnaXN0ZXJlZEtleSJCCglSZW5hbWVLZXkSEgoKcmVxdWVzdF9pZBgBIAEoCRISCgpwdWJsaWNfa2V5GAIgASgMEg0KBWxhYmVsGAMgASgJIjMKCVJlbW92ZUtleRISCgpyZXF1ZXN0X2lkGAEgASgJEhIKCnB1YmxpY19rZXkYAiABKAwiIAoKS2V5Q2hhbmdlZBISCgpyZXF1ZXN0X2lkGAEgASgJIn8KCklzc3VlVG9rZW4SEgoKcmVxdWVzdF9pZBgBIAEoCRIhCgRyb2xlGAIgASgOMhMucGlyYy52MWFscGhhMS5Sb2xlEg0KBWxhYmVsGAMgASgJEisKCGxpZmV0aW1lGAQgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uImAKC1Rva2VuSXNzdWVkEhIKCnJlcXVlc3RfaWQYASABKAkSDQoFdG9rZW4YAiABKAkSLgoKZXhwaXJlc19hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiMgoMUmVnaXN0ZXJQdXNoEhIKCnJlcXVlc3RfaWQYASABKAkSDgoGaGFuZGxlGAIgASgJIiQKDlVucmVnaXN0ZXJQdXNoEhIKCnJlcXVlc3RfaWQYASABKAkiIQoLUHVzaENoYW5nZWQSEgoKcmVxdWVzdF9pZBgBIAEoCSI5Cg9SZWdpc3RlclJlYWRLZXkSEgoKcmVxdWVzdF9pZBgBIAEoCRISCgpwdWJsaWNfa2V5GAIgASgMKlIKD1Byb3RvY29sVmVyc2lvbhIgChxQUk9UT0NPTF9WRVJTSU9OX1VOU1BFQ0lGSUVEEAASHQoZUFJPVE9DT0xfVkVSU0lPTl9WMUFMUEhBMRABKjwKBFJvbGUSFAoQUk9MRV9VTlNQRUNJRklFRBAAEg0KCVJPTEVfSE9TVBABEg8KC1JPTEVfQ0xJRU5UEAJCqwEKEWNvbS5waXJjLnYxYWxwaGExQgpSZWxheVByb3RvUAFaNXBpcmMuZGV2L3JlbGF5L2ludGVybmFsL3BiL3BpcmMvdjFhbHBoYTE7cGlyY3YxYWxwaGExogIDUFhYqgINUGlyYy5WMWFscGhhMcoCDVBpcmNcVjFhbHBoYTHiAhlQaXJjXFYxYWxwaGExXEdQQk1ldGFkYXRh6gIOUGlyYzo6VjFhbHBoYTFiBnByb3RvMw", [file_google_protobuf_duration, file_google_protobuf_timestamp, file_pirc_v1alpha1_common]);
+var file_pirc_v1alpha1_relay = /* @__PURE__ */ fileDesc("ChlwaXJjL3YxYWxwaGExL3JlbGF5LnByb3RvEg1waXJjLnYxYWxwaGExIpoMCgVGcmFtZRIlCgVoZWxsbxgBIAEoCzIULnBpcmMudjFhbHBoYTEuSGVsbG9IABItCgljaGFsbGVuZ2UYAiABKAsyGC5waXJjLnYxYWxwaGExLkNoYWxsZW5nZUgAEiMKBGF1dGgYAyABKAsyEy5waXJjLnYxYWxwaGExLkF1dGhIABIpCgd3ZWxjb21lGAQgASgLMhYucGlyYy52MWFscGhhMS5XZWxjb21lSAASOgoQc2Vzc2lvbl9hbm5vdW5jZRgKIAEoCzIeLnBpcmMudjFhbHBoYTEuU2Vzc2lvbkFubm91bmNlSAASMAoLc2Vzc2lvbl9lbmQYCyABKAsyGS5waXJjLnYxYWxwaGExLlNlc3Npb25FbmRIABI+ChJzdWJzY3JpYmVfc2Vzc2lvbnMYFCABKAsyIC5waXJjLnYxYWxwaGExLlN1YnNjcmliZVNlc3Npb25zSAASJwoGYXR0YWNoGBUgASgLMhUucGlyYy52MWFscGhhMS5BdHRhY2hIABInCgZkZXRhY2gYFiABKAsyFS5waXJjLnYxYWxwaGExLkRldGFjaEgAEj8KE3dhdGNoX3BlbmRpbmdfaG9zdHMYFyABKAsyIC5waXJjLnYxYWxwaGExLldhdGNoUGVuZGluZ0hvc3RzSAASMgoMYXBwcm92ZV9ob3N0GBggASgLMhoucGlyYy52MWFscGhhMS5BcHByb3ZlSG9zdEgAEjAKC3JlamVjdF9ob3N0GBkgASgLMhkucGlyYy52MWFscGhhMS5SZWplY3RIb3N0SAASLgoKd2F0Y2hfa2V5cxgaIAEoCzIYLnBpcmMudjFhbHBoYTEuV2F0Y2hLZXlzSAASLgoKcmVuYW1lX2tleRgbIAEoCzIYLnBpcmMudjFhbHBoYTEuUmVuYW1lS2V5SAASLgoKcmVtb3ZlX2tleRgcIAEoCzIYLnBpcmMudjFhbHBoYTEuUmVtb3ZlS2V5SAASMAoLaXNzdWVfdG9rZW4YHSABKAsyGS5waXJjLnYxYWxwaGExLklzc3VlVG9rZW5IABIyCgxzZXNzaW9uX2xpc3QYHiABKAsyGi5waXJjLnYxYWxwaGExLlNlc3Npb25MaXN0SAASOAoPc2Vzc2lvbl91cGRhdGVkGB8gASgLMh0ucGlyYy52MWFscGhhMS5TZXNzaW9uVXBkYXRlZEgAEjQKDXNlc3Npb25fZW5kZWQYICABKAsyGy5waXJjLnYxYWxwaGExLlNlc3Npb25FbmRlZEgAEjQKDXBlbmRpbmdfaG9zdHMYISABKAsyGy5waXJjLnYxYWxwaGExLlBlbmRpbmdIb3N0c0gAEjIKDGhvc3RfZGVjaWRlZBgiIAEoCzIaLnBpcmMudjFhbHBoYTEuSG9zdERlY2lkZWRIABIjCgRrZXlzGCMgASgLMhMucGlyYy52MWFscGhhMS5LZXlzSAASMAoLa2V5X2NoYW5nZWQYJCABKAsyGS5waXJjLnYxYWxwaGExLktleUNoYW5nZWRIABIyCgx0b2tlbl9pc3N1ZWQYJSABKAsyGi5waXJjLnYxYWxwaGExLlRva2VuSXNzdWVkSAASJwoGcm91dGVkGCggASgLMhUucGlyYy52MWFscGhhMS5Sb3V0ZWRIABI0Cg1yZWdpc3Rlcl9wdXNoGDwgASgLMhsucGlyYy52MWFscGhhMS5SZWdpc3RlclB1c2hIABI4Cg91bnJlZ2lzdGVyX3B1c2gYPSABKAsyHS5waXJjLnYxYWxwaGExLlVucmVnaXN0ZXJQdXNoSAASMgoMcHVzaF9jaGFuZ2VkGD4gASgLMhoucGlyYy52MWFscGhhMS5QdXNoQ2hhbmdlZEgAEjsKEXJlZ2lzdGVyX3JlYWRfa2V5GD8gASgLMh4ucGlyYy52MWFscGhhMS5SZWdpc3RlclJlYWRLZXlIABIwCgtsZWF2ZV9yZWxheRhAIAEoCzIZLnBpcmMudjFhbHBoYTEuTGVhdmVSZWxheUgAEiUKBWVycm9yGDIgASgLMhQucGlyYy52MWFscGhhMS5FcnJvckgAQgYKBGJvZHkitQEKBUhlbGxvEjgKEHByb3RvY29sX3ZlcnNpb24YASABKA4yHi5waXJjLnYxYWxwaGExLlByb3RvY29sVmVyc2lvbhIhCgRyb2xlGAIgASgOMhMucGlyYy52MWFscGhhMS5Sb2xlEhIKCnB1YmxpY19rZXkYAyABKAwSGgoScmVnaXN0cmF0aW9uX3Rva2VuGAQgASgJEg0KBWxhYmVsGAUgASgJEhAKCHNvZnR3YXJlGAYgASgJIhoKCUNoYWxsZW5nZRINCgVub25jZRgBIAEoDCIZCgRBdXRoEhEKCXNpZ25hdHVyZRgBIAEoDCKBAQoHV2VsY29tZRI4ChBwcm90b2NvbF92ZXJzaW9uGAEgASgOMh4ucGlyYy52MWFscGhhMS5Qcm90b2NvbFZlcnNpb24SFwoPbWF4X2ZyYW1lX2J5dGVzGAIgASgNEhAKCHNvZnR3YXJlGAMgASgJEhEKCXJlYWRfb25seRgEIAEoCCJcCg9TZXNzaW9uQW5ub3VuY2USKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZhIPCgdwYXlsb2FkGAIgASgMEgwKBHB1c2gYAyABKAgiOAoKU2Vzc2lvbkVuZBIqCgdzZXNzaW9uGAEgASgLMhkucGlyYy52MWFscGhhMS5TZXNzaW9uUmVmIhMKEVN1YnNjcmliZVNlc3Npb25zIjQKBkF0dGFjaBIqCgdzZXNzaW9uGAEgASgLMhkucGlyYy52MWFscGhhMS5TZXNzaW9uUmVmIjQKBkRldGFjaBIqCgdzZXNzaW9uGAEgASgLMhkucGlyYy52MWFscGhhMS5TZXNzaW9uUmVmIpEBCgxTZXNzaW9uRW50cnkSKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZhISCgpob3N0X2xhYmVsGAIgASgJEg8KB3BheWxvYWQYAyABKAwSMAoMYW5ub3VuY2VkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCJKCgtTZXNzaW9uTGlzdBItCghzZXNzaW9ucxgBIAMoCzIbLnBpcmMudjFhbHBoYTEuU2Vzc2lvbkVudHJ5EgwKBG1vcmUYAiABKAgiPAoOU2Vzc2lvblVwZGF0ZWQSKgoFZW50cnkYASABKAsyGy5waXJjLnYxYWxwaGExLlNlc3Npb25FbnRyeSI6CgxTZXNzaW9uRW5kZWQSKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZiJZCgZSb3V0ZWQSKgoHc2Vzc2lvbhgBIAEoCzIZLnBpcmMudjFhbHBoYTEuU2Vzc2lvblJlZhISCgpjbGllbnRfa2V5GAIgASgMEg8KB3BheWxvYWQYAyABKAwiEwoRV2F0Y2hQZW5kaW5nSG9zdHMiggEKC1BlbmRpbmdIb3N0EhIKCnB1YmxpY19rZXkYASABKAwSDQoFbGFiZWwYAiABKAkSEAoIc29mdHdhcmUYAyABKAkSDgoGcmVtb3RlGAQgASgJEi4KCmZpcnN0X3NlZW4YBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIjkKDFBlbmRpbmdIb3N0cxIpCgVob3N0cxgBIAMoCzIaLnBpcmMudjFhbHBoYTEuUGVuZGluZ0hvc3QiRAoLQXBwcm92ZUhvc3QSEgoKcmVxdWVzdF9pZBgBIAEoCRISCgpwdWJsaWNfa2V5GAIgASgMEg0KBWxhYmVsGAMgASgJIjQKClJlamVjdEhvc3QSEgoKcmVxdWVzdF9pZBgBIAEoCRISCgpwdWJsaWNfa2V5GAIgASgMIiEKC0hvc3REZWNpZGVkEhIKCnJlcXVlc3RfaWQYASABKAkiCwoJV2F0Y2hLZXlzIrMBCg1SZWdpc3RlcmVkS2V5EhIKCnB1YmxpY19rZXkYASABKAwSIQoEcm9sZRgCIAEoDjITLnBpcmMudjFhbHBoYTEuUm9sZRINCgVsYWJlbBgDIAEoCRIsCghhZGRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDgoGb25saW5lGAUgASgIEgwKBHB1c2gYBiABKAgSEAoIcmVhZF9rZXkYByABKAgiMgoES2V5cxIqCgRrZXlzGAEgAygLMhwucGlyYy52MWFscGhhMS5SZWdpc3RlcmVkS2V5IkIKCVJlbmFtZUtleRISCgpyZXF1ZXN0X2lkGAEgASgJEhIKCnB1YmxpY19rZXkYAiABKAwSDQoFbGFiZWwYAyABKAkiMwoJUmVtb3ZlS2V5EhIKCnJlcXVlc3RfaWQYASABKAkSEgoKcHVibGljX2tleRgCIAEoDCIgCgpMZWF2ZVJlbGF5EhIKCnJlcXVlc3RfaWQYASABKAkiIAoKS2V5Q2hhbmdlZBISCgpyZXF1ZXN0X2lkGAEgASgJIn8KCklzc3VlVG9rZW4SEgoKcmVxdWVzdF9pZBgBIAEoCRIhCgRyb2xlGAIgASgOMhMucGlyYy52MWFscGhhMS5Sb2xlEg0KBWxhYmVsGAMgASgJEisKCGxpZmV0aW1lGAQgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uImAKC1Rva2VuSXNzdWVkEhIKCnJlcXVlc3RfaWQYASABKAkSDQoFdG9rZW4YAiABKAkSLgoKZXhwaXJlc19hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiMgoMUmVnaXN0ZXJQdXNoEhIKCnJlcXVlc3RfaWQYASABKAkSDgoGaGFuZGxlGAIgASgJIiQKDlVucmVnaXN0ZXJQdXNoEhIKCnJlcXVlc3RfaWQYASABKAkiIQoLUHVzaENoYW5nZWQSEgoKcmVxdWVzdF9pZBgBIAEoCSI5Cg9SZWdpc3RlclJlYWRLZXkSEgoKcmVxdWVzdF9pZBgBIAEoCRISCgpwdWJsaWNfa2V5GAIgASgMKlIKD1Byb3RvY29sVmVyc2lvbhIgChxQUk9UT0NPTF9WRVJTSU9OX1VOU1BFQ0lGSUVEEAASHQoZUFJPVE9DT0xfVkVSU0lPTl9WMUFMUEhBMRABKjwKBFJvbGUSFAoQUk9MRV9VTlNQRUNJRklFRBAAEg0KCVJPTEVfSE9TVBABEg8KC1JPTEVfQ0xJRU5UEAJCqwEKEWNvbS5waXJjLnYxYWxwaGExQgpSZWxheVByb3RvUAFaNXBpcmMuZGV2L3JlbGF5L2ludGVybmFsL3BiL3BpcmMvdjFhbHBoYTE7cGlyY3YxYWxwaGExogIDUFhYqgINUGlyYy5WMWFscGhhMcoCDVBpcmNcVjFhbHBoYTHiAhlQaXJjXFYxYWxwaGExXEdQQk1ldGFkYXRh6gIOUGlyYzo6VjFhbHBoYTFiBnByb3RvMw", [file_google_protobuf_duration, file_google_protobuf_timestamp, file_pirc_v1alpha1_common]);
 var FrameSchema = /* @__PURE__ */ messageDesc(file_pirc_v1alpha1_relay, 0);
 
 // protocol/gen/pirc/v1alpha1/session_pb.ts
@@ -7491,6 +7527,11 @@ function loadConfig() {
 function saveRelay(relay) {
   const { removed: _, ...f } = readFile(configPath());
   write({ ...f, relay });
+}
+var HOSTED_MARKER = "pirc-e2e:anchor";
+function clearRelay() {
+  const { relay: _, removed: __, ...f } = readFile(configPath());
+  write(f);
 }
 function saveRemoved(at) {
   write({ ...readFile(configPath()), removed: at.toISOString() });
@@ -9524,6 +9565,9 @@ var Questions = class {
   }
 };
 
+// extension/src/hosted/enabled.ts
+var HOSTED = true ? false : true;
+
 // extension/src/host.ts
 var isChange = (c) => c !== void 0 && Object.hasOwn(REQUESTS, c) && REQUESTS[c] === "change";
 var IDEMPOTENCY_ENTRIES = 1e3;
@@ -9540,6 +9584,13 @@ var Host = class _Host {
   config;
   key;
   conn;
+  // In a hosted account: the anchor, and why it no longer lets this host
+  // serve, if so.
+  anchor;
+  anchorProblem;
+  // Bumped by every connect, so that a hosted connect still reading the
+  // anchor gives way to a later one.
+  connects = 0;
   state = { kind: "stopped" };
   live;
   // A session paused by a reload, until it starts again.
@@ -9588,6 +9639,7 @@ var Host = class _Host {
     const host = new _Host(p?.instanceId ?? instanceId, versions);
     if (!p) return host;
     for (const [id, seq] of p.seqs ?? []) host.seqs.set(id, seq);
+    for (const [k, v] of p.replies ?? []) if (v !== "pending" && typeof v === "object") host.replies.set(k, v);
     for (const [id, n] of p.notices ?? []) host.notices.set(id, n);
     for (const live of [p.suspended, p.live]) {
       if (!live) continue;
@@ -9687,6 +9739,74 @@ var Host = class _Host {
   connect(token) {
     this.conn?.stop();
     this.conn = void 0;
+    this.anchor = void 0;
+    this.anchorProblem = void 0;
+    const attempt = ++this.connects;
+    if (HOSTED) {
+      void this.connectHosted(attempt).then((hosted) => {
+        if (!hosted && attempt === this.connects) this.connectSelfHosted(token);
+      }, (e) => {
+        this.fail("hosted", e);
+        this.showStatus();
+      });
+      return;
+    }
+    this.connectSelfHosted(token);
+  }
+  // A machine whose anchor says it joined a hosted account: true when it
+  // has one, connected or not.
+  async connectHosted(attempt) {
+    const { Anchor } = await Promise.resolve().then(() => (init_anchor(), anchor_exports));
+    const anchor = await Anchor.read();
+    if (!anchor) return false;
+    if (attempt !== this.connects) return true;
+    this.anchor = anchor;
+    try {
+      this.config = loadConfig();
+    } catch (e) {
+      this.fail("config", e);
+    }
+    if (process.env.PIRC_RELAY) {
+      this.fail("hosted", new Error("PIRC_RELAY is set: a computer in a hosted account does not connect while it is; unset it"));
+      this.showStatus();
+      return true;
+    }
+    const state = anchor.state((this.key ??= loadOrCreateKey(this.config?.keyFile ?? "")).publicKey, (await anchor.refresh()).forks);
+    if (state.kind !== "joined") {
+      this.onAnchor(state);
+      return true;
+    }
+    const key2 = this.key;
+    const { HostedTransport } = await Promise.resolve().then(() => (init_transport(), transport_exports));
+    if (attempt !== this.connects) return true;
+    this.conn = new HostedTransport(
+      { anchor, signer: { publicKey: key2.publicKey, sign: async (m) => signWith(key2, m) }, instanceId: this.instanceId },
+      {
+        onFrame: (f) => this.onFrame(f),
+        onState: (s) => this.onState(s),
+        onAnchor: (s) => this.onAnchor(s),
+        log: (m) => this.log(`hosted: ${m}`),
+        fail: (where, e) => this.fail(where, e)
+      }
+    );
+    this.conn.start();
+    return true;
+  }
+  // The anchor no longer lets this host serve. Removed: the anchor goes,
+  // as on a phone its keys (docs/e2e.md, section 3, Removal); a fork or a
+  // failed join: the anchor stays, and /pirc join is needed.
+  onAnchor(s) {
+    this.anchorProblem = s;
+    this.conn?.stop();
+    this.conn = void 0;
+    this.log(`hosted: ${s.kind}`);
+    if (s.kind === "removed") {
+      void Promise.resolve().then(() => (init_anchor(), anchor_exports)).then(({ Anchor }) => Anchor.remove(), (e) => this.fail("hosted", e));
+    }
+    this.state = { kind: "stopped" };
+    this.showStatus();
+  }
+  connectSelfHosted(token) {
     let config;
     try {
       config = loadConfig();
@@ -9742,8 +9862,17 @@ var Host = class _Host {
   }
   statusText() {
     const s = this.state;
-    if (!this.config?.relay) return "pirc: not enrolled";
-    if (this.config.removed) return "pirc: removed from the relay";
+    switch (this.anchorProblem?.kind) {
+      case "removed":
+        return "pirc: removed from the account";
+      case "fork":
+        return "pirc: stopped: the account's list has forked";
+      case "join-failed":
+        return "pirc: the join did not take";
+    }
+    if (!this.anchor && !this.config?.relay) return "pirc: not enrolled";
+    if (!this.anchor && this.config?.relay?.startsWith("pirc-e2e:")) return "pirc: left the account";
+    if (!this.anchor && this.config?.removed) return "pirc: removed from the relay";
     switch (s.kind) {
       case "ready":
         return "pirc: online";
@@ -9762,7 +9891,13 @@ var Host = class _Host {
   statusReport() {
     const lines = [this.statusText()];
     const c = this.config;
-    if (c) {
+    const a = this.anchor;
+    if (a) {
+      lines.push(`account ${a.account.accountId.slice(0, 16)} on ${a.account.origin}, end-to-end encrypted`);
+      lines.push(`joined ${a.account.joinedAt}, approved by ${a.account.approverName ? `'${a.account.approverName}'` : a.account.approver.slice(0, 16)}`);
+      lines.push(`list version ${a.latest.body.number}`);
+      if (this.key) lines.push(`key ${Buffer.from(this.key.publicKey).toString("base64url")}`);
+    } else if (c) {
       lines.push(`config ${c.path}`);
       if (c.relay) lines.push(`relay ${c.relay}`);
       lines.push(`key ${c.keyFile}${this.key ? ` (${Buffer.from(this.key.publicKey).toString("base64url")})` : ""}`);
@@ -9774,9 +9909,26 @@ var Host = class _Host {
     if (range) lines.push(range);
     if (this.dialogs.problem) lines.push(this.dialogs.problem);
     if (this.lastError) lines.push(`last error: ${this.lastError}`);
-    if (c?.removed) lines.push(`removed from the relay ${c.removed}; to join again: /pirc enrol <relay-url> [token]`);
-    if (!c?.relay) lines.push("enrol with: /pirc enrol <relay-url> [token]; without a token, approve this key in the web app or with pirc-relay approve");
+    const p = this.anchorProblem;
+    if (p?.kind === "removed") lines.push("a client removed this computer from the account; to join again: /pirc join");
+    if (p?.kind === "fork") lines.push(`two versions ${p.number} of the account's list, neither withdrawn: this computer cannot tell which is its account's, so it serves nothing until /pirc join is run again here`);
+    if (p?.kind === "join-failed") lines.push("the version that added this computer was withdrawn; join again with /pirc join");
+    if (!a && c?.removed) lines.push(`removed from the relay ${c.removed}; to join again: /pirc enrol <relay-url> [token]`);
+    if (!a && !c?.relay) lines.push("enrol with: /pirc enrol <relay-url> [token]; without a token, approve this key in the web app or with pirc-relay approve");
     return lines.join("\n");
+  }
+  // This machine's key as a signer, and its name, for /pirc join.
+  joinIdentity() {
+    const config = loadConfig();
+    const key2 = this.key ??= loadOrCreateKey(config.keyFile);
+    return { signer: { publicKey: key2.publicKey, sign: async (m) => signWith(key2, m) }, name: config.label };
+  }
+  // Says something at pi's terminal, through the session's context.
+  notify(message, type) {
+    try {
+      this.live?.ctx.ui.notify(message, type);
+    } catch {
+    }
   }
   // The footer shows only what needs attention: online, the usual state,
   // takes no line.
@@ -9904,11 +10056,11 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.11" : "dev";
-var LOAD = true ? "0.3.11" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.12" : "dev";
+var LOAD = true ? "0.3.12" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
-var USAGE = "usage: /pirc [status | enrol <relay-url> [token] | reconnect]";
+var USAGE = HOSTED ? "usage: /pirc [status | enrol <relay-url> [token] | join <hosted-relay> | leave | reconnect]" : "usage: /pirc [status | enrol <relay-url> [token] | reconnect]";
 async function index_default(pi) {
   const twice = claimLoad(pi.events, packageRoot(import.meta.url));
   if (twice) {
@@ -10026,7 +10178,7 @@ async function index_default(pi) {
     });
   }
   pi.registerCommand("pirc", {
-    description: "PiRC: status, enrol <relay-url> [token], reconnect",
+    description: HOSTED ? "PiRC: status, enrol <relay-url> [token], join <hosted-relay>, leave, reconnect" : "PiRC: status, enrol <relay-url> [token], reconnect",
     handler: async (args, ctx) => {
       const [sub = "status", ...rest] = args.trim().split(/\s+/).filter(Boolean);
       switch (sub) {
@@ -10037,6 +10189,9 @@ async function index_default(pi) {
         case "enroll": {
           const [url, token] = rest;
           if (!url || rest.length > 2) return ctx.ui.notify(USAGE, "error");
+          if (HOSTED && await Promise.resolve().then(() => (init_anchor(), anchor_exports)).then(({ Anchor }) => Anchor.read())) {
+            return ctx.ui.notify("pirc: this computer is in a hosted account: /pirc leave first", "error");
+          }
           try {
             relayURL(url);
             saveRelay(url);
@@ -10051,11 +10206,62 @@ async function index_default(pi) {
           proc.host.connect();
           ctx.ui.notify("pirc: reconnecting", "info");
           return;
+        case "join":
+          if (!HOSTED) return ctx.ui.notify(USAGE, "error");
+          return joinCommand(rest, (m, t) => ctx.ui.notify(m, t));
+        case "leave":
+          if (!HOSTED) return ctx.ui.notify(USAGE, "error");
+          return leaveCommand((m, t) => ctx.ui.notify(m, t));
         default:
           ctx.ui.notify(USAGE, "error");
       }
     }
   });
+}
+async function joinCommand(args, say) {
+  const [origin] = args;
+  if (!origin || args.length > 1) return say(USAGE, "error");
+  if (process.env.PIRC_RELAY) return say("pirc: PIRC_RELAY is set: unset it first, since every install of PiRC on this machine reads it, older ones included", "error");
+  const { hostedOrigin } = await Promise.resolve().then(() => (init_hosted(), hosted_exports));
+  try {
+    hostedOrigin(origin);
+  } catch (err) {
+    return say(`pirc: ${err.message}`, "error");
+  }
+  const { join: join5 } = await Promise.resolve().then(() => (init_join(), join_exports));
+  proc.joining?.cancel();
+  const host = proc.host;
+  const me = host.joinIdentity();
+  const j = join5({
+    origin,
+    signer: me.signer,
+    name: me.name,
+    log: (m) => host.log(m),
+    onCode: (shown2, until) => {
+      const at = until.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      say(`pirc: type ${shown2} into a PiRC app of your account, under Add a device. Whoever types this code gets full control of this computer: never read it out to anyone. It works once, until ${at}.`, "warning");
+    }
+  });
+  proc.joining = j;
+  try {
+    const { approverName } = await j.done;
+    saveRelay(HOSTED_MARKER);
+    host.connect();
+    host.notify(`pirc: joined the account, approved by ${approverName ? `'${approverName}'` : "a client"}`, "info");
+  } catch (err) {
+    host.notify(`pirc: the join failed: ${err.message}. Run /pirc join again for a new code.`, "error");
+  } finally {
+    if (proc.joining === j) proc.joining = void 0;
+  }
+}
+async function leaveCommand(say) {
+  const { Anchor } = await Promise.resolve().then(() => (init_anchor(), anchor_exports));
+  if (!await Anchor.read()) return say("pirc: this computer is in no hosted account", "error");
+  proc.joining?.cancel();
+  Anchor.remove();
+  clearRelay();
+  proc.host.connect();
+  say("pirc: left the account; remove this computer from the account's list in a PiRC app", "info");
 }
 export {
   index_default as default
