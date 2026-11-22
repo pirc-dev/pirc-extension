@@ -1,4 +1,4 @@
-// PiRC extension 0.3.12. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
+// PiRC extension 0.3.13. Third-party code in this file: @bufbuild/protobuf@2.16.0, ws@8.22.0; see NOTICE.
 import { createRequire as __pircCreateRequire } from "node:module";
 const require = __pircCreateRequire(import.meta.url);
 var __create = Object.create;
@@ -8195,47 +8195,53 @@ async function tmuxPlace(env) {
   return place({ kind: "tmux", group, window, windowNumber: Number(windowNumber) });
 }
 function herdrSession(path) {
-  const socket = createConnection(path);
-  let buf = "";
+  const open = /* @__PURE__ */ new Set();
   let n = 0;
-  const waiting = /* @__PURE__ */ new Map();
-  const failAll = (e) => {
-    for (const w of waiting.values()) w.reject(e);
-    waiting.clear();
-  };
-  socket.setEncoding("utf8");
-  socket.on("data", (d) => {
-    buf += d;
-    let i;
-    while ((i = buf.indexOf("\n")) >= 0) {
-      const line = buf.slice(0, i);
-      buf = buf.slice(i + 1);
-      let m;
-      try {
-        m = JSON.parse(line);
-      } catch {
-        continue;
-      }
-      const w = m.id ? waiting.get(m.id) : void 0;
-      if (!w) continue;
-      waiting.delete(m.id);
-      if (m.result) w.resolve(m.result);
-      else w.reject(new Error(`herdr: ${m.error?.message ?? "no result"}`));
-    }
-  });
-  socket.on("error", (e) => failAll(e));
-  socket.on("close", () => failAll(new Error("herdr closed the connection")));
+  let closed = false;
   return {
     ask(method, params) {
       const id = `pirc-${++n}`;
       return new Promise((resolve, reject) => {
-        waiting.set(id, { resolve, reject });
+        if (closed) return reject(new Error("herdr did not answer in time"));
+        const socket = createConnection(path);
+        open.add(socket);
+        let buf = "";
+        let done = false;
+        const finish = (err, result) => {
+          if (done) return;
+          done = true;
+          open.delete(socket);
+          socket.destroy();
+          if (err) reject(err);
+          else resolve(result);
+        };
+        socket.setEncoding("utf8");
+        socket.on("data", (d) => {
+          buf += d;
+          let i;
+          while ((i = buf.indexOf("\n")) >= 0) {
+            const line = buf.slice(0, i);
+            buf = buf.slice(i + 1);
+            let m;
+            try {
+              m = JSON.parse(line);
+            } catch {
+              continue;
+            }
+            if (m.id !== id) continue;
+            if (m.result) finish(void 0, m.result);
+            else finish(new Error(`herdr: ${m.error?.message ?? "no result"}`));
+          }
+        });
+        socket.on("error", (e) => finish(new Error(`herdr: ${e.message}`)));
+        socket.on("close", () => finish(new Error(closed ? "herdr did not answer in time" : "herdr closed the connection")));
         socket.write(`${JSON.stringify({ id, method, params })}
 `);
       });
     },
     close() {
-      socket.destroy();
+      closed = true;
+      for (const s of open) s.destroy();
     }
   };
 }
@@ -10056,8 +10062,8 @@ var Host = class _Host {
 };
 
 // extension/src/index.ts
-var EXTENSION_VERSION = true ? "0.3.12" : "dev";
-var LOAD = true ? "0.3.12" : `dev ${randomBytes4(4).toString("hex")}`;
+var EXTENSION_VERSION = true ? "0.3.13" : "dev";
+var LOAD = true ? "0.3.13" : `dev ${randomBytes4(4).toString("hex")}`;
 var KEY = /* @__PURE__ */ Symbol.for("pirc.extension");
 var proc = globalThis[KEY] ??= {};
 var USAGE = HOSTED ? "usage: /pirc [status | enrol <relay-url> [token] | join <hosted-relay> | leave | reconnect]" : "usage: /pirc [status | enrol <relay-url> [token] | reconnect]";
