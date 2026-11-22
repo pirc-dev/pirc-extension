@@ -1,7 +1,7 @@
 {
   "name": "pirc-extension",
-  "version": "0.3.13",
-  "description": "PiRC: puts every interactive pi session on a PiRC relay",
+  "version": "0.3.14",
+  "description": "PiRC: remote control for pi from your iPhone, Android phone or browser",
   "license": "MIT",
   "homepage": "https://pirc.dev",
   "repository": {
